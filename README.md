@@ -21,3 +21,23 @@ Test-Case-7	Login using invalid credentials and capture the error message displa
 ##Notes
 
 This project demonstrates Page Object Model (POM) for better code structure.
+
+##POM Structure
+Project_1/
+│
+├── Pages/                          # Page Object files
+│   ├── __init__.py
+│   ├── base_page.py                # Common Selenium methods
+│   ├── home_page.py
+│   └── login_page.py
+│
+├── Tests/                          # All test cases
+│   ├── __init__.py
+│   ├── test_homepage.py
+│   ├── test_login.py             # (Consider separating logout test)
+│
+├── reports/                        # Generated HTML reports
+│   ├── report1.html
+│   ├── report2.html
+│
+├── conftest.py                     # Fixtures (driver setup, hooks)
