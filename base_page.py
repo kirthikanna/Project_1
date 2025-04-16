@@ -1,37 +1,35 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 class BasePage:
-    def __init__(self,driver):
-        #This initializes the class with a selenium webdriver instance
+    def __init__(self, driver):
         self.driver = driver
+        self.wait = WebDriverWait(driver, 10)
 
     def get_title(self):
-        #Returns the title of the current webpage
         return self.driver.title
 
-    def is_element_visible(self,locator):
-        #wait until the element is visible and return True
+    def is_element_visible(self, locator):
         try:
-            WebDriverWait(self.driver,10).until(EC.visibility_of_element_located(locator))
-            return True
-        except:
+            element = self.wait.until(EC.visibility_of_element_located(locator))
+            return element.is_displayed()
+        except TimeoutException:
+            print(f"[ERROR] Element not visible: {locator}")
             return False
 
-
-    def is_element_clickable(self,locator):
-        #wait until the element is clickable and return True
+    def is_element_clickable(self, locator):
         try:
-            WebDriverWait(self.driver,10).until(EC.element_to_be_clickable(locator))
+            self.wait.until(EC.element_to_be_clickable(locator))
             return True
-        except:
+        except TimeoutException:
+            print(f"[ERROR] Element not clickable: {locator}")
             return False
-    def click_element(self,locator):
-        #Wait and click the element
-            WebDriverWait(self.driver,10).until(EC.element_to_be_clickable(locator)).click()
 
-    def enter_text(self,locator,text):
-         #wait and send keys to input field
-            element = WebDriverWait(self.driver,10).until(EC.visibility_of_element_located())
-            element.send_keys(text)
+    def click_element(self, locator):
+        self.wait.until(EC.element_to_be_clickable(locator)).click()
+
+    def enter_text(self, locator, text):
+        element = self.wait.until(EC.visibility_of_element_located(locator))
+        element.clear()
+        element.send_keys(text)
