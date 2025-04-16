@@ -1,69 +1,55 @@
-import time
-
-from selenium.common.exceptions import NoSuchElementException
+# import time
+import pytest
 from Pages.home_page import HomePage
 
-
-#Test Case to validate the URl is correct
 def test_url_validity(setup):
-    try:
-        assert "guvi.in" in setup.current_url
-    except AssertionError:
-        print("URL is not valid or doesn't contain 'guvi.in'")
+    """Test that URL contains 'guvi.in'"""
+    print("Verifying URL contains 'guvi.in'")
+    assert "guvi.in" in setup.current_url, "URL validation failed"
+    print("URL contains 'guvi.in'")
 
-#Test case to validate the title of the page
 def test_title(setup):
-    try:
-        assert setup.title == "GUVI | learn to code iin your native language"
-    except AssertionError:
-        print("Page title does not match expected title")
+    """Test page title matches expected"""
+    print("Verifying page title matches expected value")
+    expected_title = "GUVI | Learn to code in your native language"
+    assert setup.title == expected_title, "Title mismatch"
+    print("Page title is correct")
 
-#Test case to check login button visibility
 def test_login_button_visibility(setup):
+    """Test login button is visible"""
     page = HomePage(setup)
-    try:
-        assert page.is_element_visible(HomePage.LOGIN_BUTTON)
-    except NoSuchElementException:
-        print("Login button element not found")
-    except AssertionError:
-        print("Login button is not visible")
+    print("Checking if login button is visible")
+    assert page.is_element_visible(HomePage.LOGIN_BUTTON), "Login button not visible"
+    print("Login button is visible")
 
-#Test case to check if the login button is clickable
 def test_login_button_clickable(setup):
+    """Test login button is clickable"""
     page = HomePage(setup)
-    try:
-        assert page.is_element_clickable(HomePage.LOGIN_BUTTON)
-    except NoSuchElementException:
-        print("Login button element not found")
-    except AssertionError:
-        print("Login button is not clickable")
+    print("Checking if login button is clickable")
+    assert page.is_element_clickable(HomePage.LOGIN_BUTTON), "Login button not clickable"
+    print("Login button is clickable")
 
-#Test case to check sign-up button visibility
+
 def test_signup_button_visibility(setup):
+    """Test signup button is visible"""
     page = HomePage(setup)
-    try:
-        assert page.is_element_visible(HomePage.SIGNUP_BUTTON)
-        time.sleep(2)
-    except NoSuchElementException:
-        print("Sign-up button element not found")
-    except AssertionError:
-        print("Sign-up button is not visible")
-#Test case to check sign-up button clickable
+    print("Checking if signup button is visible")
+    assert page.is_element_visible(HomePage.SIGNUP_BUTTON), "Signup button not visible"
+    print("Signup button is visible")
+
 def test_signup_button_clickable(setup):
+    """Test signup button is clickable"""
     page = HomePage(setup)
-    try:
-        assert page.is_element_clickable(HomePage.SIGNUP_BUTTON)
-    except NoSuchElementException:
-        print("Sign-up button element not found")
-    except AssertionError:
-        print("Sign-up button is not clickable")
-#Test case to check navigation to sign-in page using sign-up button
+    print("Checking if signup button is clickable")
+    assert page.is_element_clickable(HomePage.SIGNUP_BUTTON), "Signup button not clickable"
+    print("Signup button is clickable")
+
+
 def test_signup_navigation(setup):
+    """Test signup button navigates to register page"""
     page = HomePage(setup)
-    try:
-        page.click_signup()
-        assert "sign-in" in setup.current_url
-    except NoSuchElementException:
-        print("sign-up button element not found for navigation")
-    except AssertionError:
-        print("Navigation to sign-in page failed")
+    print("Clicking signup button and verifying navigation")
+    page.click_signup()
+    print(f"Current URL after click: {setup.current_url}")
+    assert "register" in setup.current_url.lower(), "Navigation to register page failed"
+    print("Successfully navigated to register page")
